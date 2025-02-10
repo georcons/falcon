@@ -43,7 +43,9 @@ initialization:
     solver.set_model("o3-mini")
     solver.set_temperature(1)
 
-There are two pre-implemented pipelines: for OpenAI (pipename is ``OpenAI``) and for TogetherAI (pipename is ``Together``).
+There are two pre-implemented pipelines: for OpenAI (pipename is ``OpenAI``) and for TogetherAI (pipename is ``Together``). For both you must set 
+your API key as an environment variable (``OPENAI_API_KEY`` and ``TOGETHER_API_KEY`` respectively). TogetherAI does not support async jobs.
+
 Note: If you are using your own prompting template and want to parse hints you must include a ``{hint}`` handle in it. Otherwise if you haven't 
 specified a template the package will take care of it. To avoid confusition please do not ask the model to format the answer in a specific way 
 as this is already included in the script.
