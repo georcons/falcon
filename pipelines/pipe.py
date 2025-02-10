@@ -13,6 +13,8 @@ class Pipeline:
         self.retrieve_response = PIPE_ENTIRE_MODULE.retrieve_response
         self.send_batch = PIPE_ENTIRE_MODULE.send_batch
         self.retrieve_batch = PIPE_ENTIRE_MODULE.retrieve_batch
+        self.DEF_MODEL = PIPE_ENTIRE_MODULE.DEF_MODEL
+        self.DEF_TEMPERATURE = PIPE_ENTIRE_MODULE.DEF_TEMPERATURE
 
     @staticmethod
     def get_pipes():

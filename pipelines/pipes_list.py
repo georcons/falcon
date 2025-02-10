@@ -1,7 +1,8 @@
 #
 # If you create new pipes you MUST update this table
 PIPES_SOURCES = {
-    "OpenAI": ".gptpipe"
+    "OpenAI": ".gptpipe",
+    "Together": ".together"
 }
 
 def retrieve_model_source(name):

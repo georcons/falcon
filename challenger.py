@@ -1,12 +1,15 @@
-from pipelines import Pipeline
+from .pipelines import Pipeline
 
 DEFAULT_TEMPLATE = "Please solve the following problem: {statement};"
 DEFAULT_HINT_TEMPLATE = "Please solve the following problem: {statement}; Here is a hint that might help: {hint};"
 
 class Challenger:
-    def __init__(self, pipename='OpenAI', template=None):
+    def __init__(self, pipename='OpenAI', model=None, template=None, temperature=None, max_tokens=None):
         self.set_pipe(pipename)
         self.set_template(template)
+        self.set_model(model)
+        self.set_temperature(temperature)
+        self.set_max_tokens(max_tokens)
 
     def set_pipe(self, pipename):
         if pipename in Pipeline.get_pipes():
@@ -14,6 +17,30 @@ class Challenger:
             self.pipename = pipename
         else:
             raise Exception("Invalid pipe name - '" + pipe_name + "'")
+
+    def set_model(self, model):
+        if model == None:
+            self.model = self.pipeline.DEF_MODEL
+        else:
+            self.model = model
+
+    def set_temperature(self, temperature):
+        if temperature == None:
+            self.temperature = self.pipeline.DEF_TEMPERATURE
+        else:
+            self.temperature = temperature
+        
+    def set_max_tokens(self, max_tokens):
+        self.max_tokens = max_tokens
+
+    def get_max_tokens(self):
+        return self.max_tokens 
+
+    def get_temperature(self):
+        return self.temperature
+
+    def get_model(self):
+        return self.model
 
     def get_pipe(self):
         return self.pipename
@@ -77,7 +104,7 @@ class Challenger:
         prompts = self.compile_problems(problems, hints)
         results = []
         for prompt in prompts:
-            res = self.pipeline.retrieve_response(prompt, response_count=voters)
+            res = self.pipeline.retrieve_response(prompt, model=self.model, temperature=self.temperature, response_count=voters)
             if vote:
                 solution = self._do_voting(res, output_type=output_type)
                 results.append(solution)
@@ -110,7 +137,7 @@ class Challenger:
         if hints != None and len(problems) != len(hints):
             raise Exception("Number of problems and number of hints must the same")
         prompts = self.compile_problems(problems, hints)
-        return self.pipeline.send_batch(prompts, response_count=voters)
+        return self.pipeline.send_batch(prompts, model=self.model, temperature=self.temperature, response_count=voters)
 
     def retrieve_problems(self, batch_id, output_type='solutions', vote=True):
         if output_type != 'solutions' and output_type != 'answers':

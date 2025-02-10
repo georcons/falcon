@@ -48,12 +48,22 @@ def retrieve_response(prompt, system_prompt=DEF_SYSTEM_PROMPT, model=DEF_MODEL, 
     responses = []
 
     for i in range(response_count):
-        response = openai.chat.completions.create(
-            model=model, 
-            messages=messages,
-            max_tokens=max_tokens,
-            temperature=temperature
-        )
+        response = None
+        if max_tokens == None:
+            response = openai.chat.completions.create(
+                model=model, 
+                messages=messages,
+                temperature=temperature
+            )
+
+        else:
+            response = openai.chat.completions.create(
+                model=model, 
+                messages=messages,
+                max_tokens=max_tokens,
+                temperature=temperature
+            )
+
 
         responses.append(response.choices[0].message.content)
         
@@ -79,7 +89,10 @@ def send_batch(prompts, system_prompts=None, model=DEF_MODEL, temperature=DEF_TE
 
     for prompt in prompts:
         system_prompt = "" if system_prompts == None else system_prompts[index]
-        tasks += _generate_prompts_json(prompt, system_prompt, index, total_count, max_tokens=max_tokens, temperature=temperature, model=model, compute_count=response_count)
+        if max_tokens == None:
+            tasks += _generate_prompts_json(prompt, system_prompt, index, total_count, temperature=temperature, model=model, compute_count=response_count)
+        else:
+            tasks += _generate_prompts_json(prompt, system_prompt, index, total_count, max_tokens=max_tokens, temperature=temperature, model=model, compute_count=response_count)
         index += 1
     
     filename = "./file-" + (''.join(random.choice(string.ascii_uppercase + string.digits) for _ in range(24))) + ".jsonl"
