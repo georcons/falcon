@@ -89,5 +89,7 @@ are provided. They work in the same way except for the fact that the second extr
 Challenger). The ``answers`` (and ``solutions``) must a list. Each item can be either an answers (solution) or a list of answers (solutions). The output for
 both method is a list of floats represiting the fraction of answers (solutions) that were correct.
 
+	from falcon import Grader
+
     answers_correct = ["97", "56", "4950"]
-    evalution = Challenger.grade(answers, answers_correct)
+    evalution = Grader.grade(answers, answers_correct)
