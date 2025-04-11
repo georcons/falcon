@@ -1,0 +1,9 @@
+name: vllm
+channels:
+  - defaults
+  - conda-forge
+dependencies:
+  - python=3.10  # Specify Python version (if needed)
+  - pip  # Ensure pip is available for local library installation
+postinstall: |
+    pip install vllm
